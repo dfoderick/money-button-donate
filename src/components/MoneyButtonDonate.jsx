@@ -59,6 +59,16 @@ class MoneyButtonDonate extends React.Component {
                     {/* <input type="text" value={amt} size="100px"></input> */}
                 </div>
                 ) : null}
+                {dsp === 'input' ? (
+                <div style={{float:"left", padding:"5px"}}>
+                    <div style={{fontSize:"small", ...this.styleFont}}>
+                        Enter amount
+                    </div>
+                    <div style={{fontSize:"small", ...this.styleFont}}>
+                        <input type="number" value={amt} onChange={this.handleChangeAmount} min="1.00" max="100.00" step="0.01" size="100px"></input>
+                    </div>
+                </div>
+                ) : null}
                 {dsp === 'slider' || !dsp ? (
                 <div style={{float:"left", padding:"5px"}}>
                     <div style={{fontSize:"small", ...this.styleFont}}>

@@ -36,6 +36,10 @@ class App extends Component {
           <fieldset className="App-intro">
               <MoneyButtonDonate display="dropdown" />
           </fieldset>
+          <p>Select donation amount with a textbox...</p>
+          <fieldset className="App-intro">
+              <MoneyButtonDonate display="input" />
+          </fieldset>
         </div>
       </div>
     );
