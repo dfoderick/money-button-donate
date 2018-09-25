@@ -14,7 +14,7 @@ class App extends Component {
         <div style={{"textAlign":"left", "margin":"20px"}}>
           <p>View source on GitHub <a href="https://github.com/dfoderick/money-button-donate">https://github.com/dfoderick/money-button-donate</a></p>
           <p style={{"color":"red"}}>
-            !!! Note that the button is live. Do not slide the money button unless you want to make a donation to me!!!
+            {/* !!! Note that the button is live. Do not slide the money button unless you want to make a donation to me!!! */}
           {/*
             Customize your button
             <div>

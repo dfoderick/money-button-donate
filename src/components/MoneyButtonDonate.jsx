@@ -18,9 +18,10 @@ class MoneyButtonDonate extends React.Component {
         fontFamily: 'sans-serif'
       };
 
-    mbOnErrorCallback = (error) => {
-        alert(error);
-    }
+    // mbOnErrorCallback = (error) => {
+    //     alert(error);
+    // }
+    // onError = {this.mbOnErrorCallback}
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
@@ -69,7 +70,6 @@ class MoneyButtonDonate extends React.Component {
                             value={this.state.amount}
                             onChange={this.handleChangeAmount}></input>
                     </div>
-                    {/* <input type="text" value={amt} size="100px"></input> */}
                 </div>
                 ) : null}
                 <div style={{float:"left"}}>
@@ -79,7 +79,8 @@ class MoneyButtonDonate extends React.Component {
                     currency={this.state.currency}
                     type="tip"
                     label={this.state.label}
-                    onError = {this.mbOnErrorCallback}
+                    opReturnData="FullCycleMining"
+                    devMode={true}
                     />
                 </div>
             </div>
