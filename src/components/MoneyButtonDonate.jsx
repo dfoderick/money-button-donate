@@ -3,20 +3,33 @@ import MoneyButton from '@moneybutton/react-money-button'
 
 class MoneyButtonDonate extends React.Component {
     
+    // constructor(props) {
+    //     super(props);
+    //     //this.state.amount = props.defaultAmount;
+    // }
+
     state = {
         to: "145",
         amount: "1",
         currency: "USD",
-        label: "Slide to Donate"
+        reference: ""
     };
 
     handleChangeAmount = event => {
         this.setState({ amount: event.target.value });
     }
+    handleChangeReference = event => {
+        this.setState({ reference: event.target.value });
+    }
 
     styleFont = {
         fontFamily: 'sans-serif'
       };
+
+    mbOnPaymentCallback = (payment) => {
+        const msg = "Do anything you want when the payment is successfull. " + JSON.stringify(payment)
+        alert(msg);
+    }
 
     // mbOnErrorCallback = (error) => {
     //     alert(error);
@@ -25,6 +38,7 @@ class MoneyButtonDonate extends React.Component {
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
+        //opReturnData="money-button-donation"
         let amt = this.state.amount;
         let dsp = this.props.display;
         return (
@@ -42,7 +56,7 @@ class MoneyButtonDonate extends React.Component {
                 {dsp === 'dropdown' ? (
                 <div style={{float:"left", padding:"5px"}}>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        Select donation
+                        {this.props.labelAmount}
                     </div>
                     <div style={{...this.styleFont}}>
                     <select value={amt} style={{width:"90px"}}
@@ -56,23 +70,30 @@ class MoneyButtonDonate extends React.Component {
                         <option value="100">$100</option>
                     </select>
                     </div>
-                    {/* <input type="text" value={amt} size="100px"></input> */}
                 </div>
                 ) : null}
                 {dsp === 'input' ? (
                 <div style={{float:"left", padding:"5px"}}>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        Enter amount
+                        {this.props.labelReference}
+                    </div>
+                    <div style={{...this.styleFont}}>
+                        <input type="text" maxLength="20" id="reference"
+                            value={this.state.reference} size="15"
+                            onChange={this.handleChangeReference}></input>
                     </div>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        <input type="number" value={amt} onChange={this.handleChangeAmount} min="1.00" max="100.00" step="0.01" size="100px"></input>
+                        {this.props.labelAmount}
+                    </div>
+                    <div style={{fontSize:"small", ...this.styleFont}}>
+                        <input type="number" value={amt} onChange={this.handleChangeAmount} min="1.00" max="100000.00" step="0.01" size="100px"></input>
                     </div>
                 </div>
                 ) : null}
                 {dsp === 'slider' || !dsp ? (
                 <div style={{float:"left", padding:"5px"}}>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        Select donation
+                        {this.props.labelAmount}
                     </div>
                     <div style={{...this.styleFont}}>
                         <input type="range" min="1" max="100" id="donationamount"
@@ -87,9 +108,11 @@ class MoneyButtonDonate extends React.Component {
                     to={this.state.to}
                     amount={amt}
                     currency={this.state.currency}
-                    type="tip"
-                    label={this.state.label}
-                    opReturnData="FullCycleMining"
+                    type={this.props.type}
+                    label={this.props.labelMoneyButton}
+                    opReturnData={this.state.reference}
+                    onPayment={this.mbOnPaymentCallback}
+                    buttonId = {this.props.buttonId}
                     devMode={true}
                     />
                 </div>
