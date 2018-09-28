@@ -1,3 +1,9 @@
+<p align="left">
+    <a href="https://twitter.com/dfoderick">
+        <img src="https://img.shields.io/twitter/follow/dfoderick.svg?style=social&logo=twitter"
+            alt="follow on Twitter"></a>
+</p>
+
 # money-button-donate
 Demostrates various ways to customize the donation amount for the Money Button
 

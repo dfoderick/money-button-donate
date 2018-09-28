@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Alert, Card, CardBody,CardTitle } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
+import { SocialIcon } from 'react-social-icons';
 
 class App extends Component {
 
@@ -105,16 +106,20 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Customize your MoneyButton</h1>
         </header>
-        <div style={{"textAlign":"left", "margin":"20px"}}>
-          <p>View source on GitHub <a href="https://github.com/dfoderick/money-button-donate">https://github.com/dfoderick/money-button-donate</a></p>
+        <div style={{"alignText":"left", padding:"20px"}}>
+          <div className="row">
+            <div style={{"width":"50%"}}>
+            <p>View source on GitHub <a href="https://github.com/dfoderick/money-button-donate">https://github.com/dfoderick/money-button-donate</a></p>
+            </div>
+            <div style={{"width":"50%", "textAlign":"right", "padding":"5px"}}>
+              <a href="https://twitter.com/dfoderick?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @dfoderick</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              <SocialIcon url="http://twitter.com/dfoderick" style={{ height: 35, width: 35, margin:"5px" }} />
+            </div>
+          </div>
           <div>
             <Alert color="primary">
               Money Button is working in demo mode. That means no funds will be spent from your account.
             </Alert>
-            {/* <div>
-              <input type="radio" checked={this.state.devMode === true}></input> Dev
-              <input type="radio" checked={this.state.devMode === false}></input> Live
-            </div> */}
             <div className="row">
             <Card style={{"width":"50%"}}>
             <CardBody>
@@ -123,6 +128,7 @@ class App extends Component {
             <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >Type</label>
                 <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
+                &nbsp;
                 <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
@@ -142,7 +148,6 @@ class App extends Component {
                  <input type="text" className="form-control" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
               </div>
               </div>
-
               </CardBody>
             </Card>          
             <Card style={{"width":"50%"}}>
@@ -188,7 +193,6 @@ class App extends Component {
               />
               </CardBody>
           </Card>
-
         </div>
       </div>
     );
