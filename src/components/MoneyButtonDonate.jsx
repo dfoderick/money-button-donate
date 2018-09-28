@@ -9,7 +9,7 @@ class MoneyButtonDonate extends React.Component {
     // }
 
     state = {
-        to: "145",
+//        to: "145",
         amount: "1",
         currency: "USD",
         reference: ""
@@ -105,7 +105,7 @@ class MoneyButtonDonate extends React.Component {
                 ) : null}
                 <div style={{float:"left"}}>
                     <MoneyButton
-                    to={this.state.to}
+                    to={this.props.to}
                     amount={amt}
                     currency={this.state.currency}
                     type={this.props.type}

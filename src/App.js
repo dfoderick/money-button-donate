@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Alert, Card, CardBody,CardTitle } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 
 class App extends Component {
@@ -8,7 +9,8 @@ class App extends Component {
   state = {
     devMode: true,
     type: "buy",
-    to:"145",
+    to:"",
+    currency:"USD",
     labelMoneyButton: "Slide to Donate",
     labelAmount: "Enter Amount",
     labelReference: "Order Number"
@@ -23,7 +25,6 @@ class App extends Component {
   updateType = val => event => {
     if (event.target) {
       if (event.target.checked) {
-        // this.props.updateCategory(e.target.value)
         this.setState({
           type: val,
         });
@@ -36,67 +37,158 @@ class App extends Component {
   };
 
   render() {
+
+    let code=`
+    <div style="padding:5px">
+    <div>
+      ${this.state.labelReference}
+    </div>
+    <div>
+      <input type="text" maxLength="20" id="pay-reference" size="15" name="pay-reference" onkeyup="return changeReference(this, event);"></input>
+    </div>
+    <div>
+      ${this.state.labelAmount}
+    </div>
+    <div>
+      <input type="number" min="0.01" max="100000.00" step="0.01" size="100px" onkeyup="return changeAmount(this, event);" name="pay-amount"></input>
+    </div>
+  </div>
+  
+  <div id="pay-button"></div>
+  <script src="https://api.moneybutton.com/moneybutton.js"></script>
+  <script>
+    const mb_to = '${this.state.to}';
+    const mb_type = '${this.state.type}';
+    const mb_currency = '${this.state.currency}';
+    const mb_label = '${this.state.labelMoneyButton}';
+    moneyButton.render(
+      document.getElementById('pay-button'), {
+        to: mb_to,
+        type: mb_type,
+        amount: 0,
+        currency: mb_currency,
+        label: mb_label
+      }
+    );
+  
+    function renderMoneyButton(amt, reference) {
+      moneyButton.render(
+        document.getElementById('pay-button'), {
+          to: mb_to,
+          type: mb_type,
+          amount: amt,
+          currency: mb_currency,
+          opReturnData: reference,
+          label: mb_label
+        }
+      );
+    }
+  
+    function changeAmount(obj, event) {
+      if (event.target.value) {
+        renderMoneyButton(event.target.value, document.getElementById('pay-reference').value);
+      }
+    }
+  
+    function changeReference(obj, event) {
+      if (event.target.value) {
+        renderMoneyButton(document.getElementById('pay-amount').value, event.target.value);
+      }
+    }
+  
+  </script>
+      `;
+
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to money-button-donate</h1>
+          <h1 className="App-title">Customize your MoneyButton</h1>
         </header>
         <div style={{"textAlign":"left", "margin":"20px"}}>
           <p>View source on GitHub <a href="https://github.com/dfoderick/money-button-donate">https://github.com/dfoderick/money-button-donate</a></p>
           <div>
-            <div style={{"color":"red", ...this.styles}}>
-              {/* !!! Note that the button is live. Do not slide the money button unless you want to make a donation to me!!! */}
+            <Alert color="primary">
               Money Button is working in demo mode. That means no funds will be spent from your account.
-            </div>
+            </Alert>
             {/* <div>
               <input type="radio" checked={this.state.devMode === true}></input> Dev
               <input type="radio" checked={this.state.devMode === false}></input> Live
             </div> */}
-            <fieldset>
-            <legend>Customize your MoneyButton</legend>
-              <div style={{...this.styles}}>
-                <input type="radio" radioGroup="type" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
-                <input type="radio" radioGroup="type" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
+            <div className="row">
+            <Card style={{"width":"50%"}}>
+            <CardBody>
+              <CardTitle>Customize your MoneyButton</CardTitle>
+            <div className="form-group form-inline" style={{"float":"left"}}>
+            <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >Type</label>
+                <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
+                <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
               </div>
-              <div style={{...this.styles}}>
-                Send to (userid or address) <input type="text" value={this.state.to} onChange={this.handleChange("to")}></input>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >Send to (User Number or address)</label>
+                 <input type="text" className="form-control" value={this.state.to} onChange={this.handleChange("to")}></input>
               </div>
-              <div style={{...this.styles}}>
-                Money Button Label <input type="text" value={this.state.labelMoneyButton} onChange={this.handleChange("labelMoneyButton")}></input>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >Money Button Label</label>
+                 <input type="text" className="form-control" value={this.state.labelMoneyButton} onChange={this.handleChange("labelMoneyButton")}></input>
               </div>
-              <div style={{...this.styles}}>
-                Prompt for Amount <input type="text" value={this.state.labelAmount} onChange={this.handleChange("labelAmount")}></input>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >Prompt for Amount</label>
+                 <input type="text" className="form-control" value={this.state.labelAmount} onChange={this.handleChange("labelAmount")}></input>
               </div>
-              <div style={{...this.styles}}>
-                Prompt for Reference <input type="text" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+              <label className="col-sm-4 col-form-label" >Prompt for Reference</label>
+                 <input type="text" className="form-control" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
               </div>
-            </fieldset>          
+              </div>
+
+              </CardBody>
+            </Card>          
+            <Card style={{"width":"50%"}}>
+                  <CardBody>
+                    <CardTitle>Copy Code</CardTitle>
+                    <div>
+                      <textarea id="mb-code" rows="10" cols="80" value={code}>
+                      </textarea>
+                    </div>
+                    </CardBody>
+            </Card>
            </div>
-           <p>Select amount with a textbox...</p>
-          <fieldset className="App-intro">
+           </div>
+          <Card>
+            <CardBody>
+            <CardTitle>Select amount with a textbox...</CardTitle>
               <MoneyButtonDonate display="input" buttonId="input" 
                 devMode={this.state.DevMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
-                type={this.state.type}
+                type={this.state.type} to={this.state.to}
               />
-          </fieldset>
-          <p>Select amount with a slider control...</p>
-          <fieldset className="App-intro">
+              </CardBody>
+          </Card>
+
+          <Card>
+            <CardBody>
+            <CardTitle>Select amount with a slider control...</CardTitle>
               <MoneyButtonDonate buttonId="slider" 
                 devMode={this.state.DevMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
-                type={this.state.type}
+                type={this.state.type} to={this.state.to}
               />
-          </fieldset>
-          <p>Select amount with a drop down control...</p>
-          <fieldset className="App-intro">
+              </CardBody>
+          </Card>
+
+          <Card>
+            <CardBody>
+            <CardTitle>Select amount with a drop down control...</CardTitle>
               <MoneyButtonDonate display="dropdown" buttonId="dropdown" 
                 devMode={this.state.DevMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
-                type={this.state.type}
+                type={this.state.type} to={this.state.to}
               />
-          </fieldset>
+              </CardBody>
+          </Card>
+
         </div>
       </div>
     );
