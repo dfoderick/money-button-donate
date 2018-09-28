@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Alert, Card, CardBody,CardTitle } from 'reactstrap';
+import { Alert, Card, CardBody,CardTitle, Button } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import { SocialIcon } from 'react-social-icons';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 class App extends Component {
 
   state = {
+    copied: false,
     devMode: true,
     type: "buy",
     to:"",
@@ -20,6 +22,7 @@ class App extends Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
+      copied: false
     });
   };
 
@@ -28,6 +31,7 @@ class App extends Component {
       if (event.target.checked) {
         this.setState({
           type: val,
+          copied: false
         });
       }
     }
@@ -149,10 +153,16 @@ class App extends Component {
               </div>
               </div>
               </CardBody>
-            </Card>          
+            </Card>
             <Card style={{"width":"50%"}}>
                   <CardBody>
-                    <CardTitle>Copy Code</CardTitle>
+                    <CardTitle>
+                      <CopyToClipboard text={code}
+                        onCopy={() => this.setState({copied: true})}>
+                        <button>Copy to clipboard</button>
+                      </CopyToClipboard>
+                      {this.state.copied ? <span style={{color: 'red'}}>&nbsp;Copied</span> : null}
+                    </CardTitle>
                     <div>
                       <textarea id="mb-code" rows="10" cols="80" value={code}>
                       </textarea>
