@@ -1,16 +1,26 @@
-import React from 'react'
+import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
 
 class MoneyButtonDonate extends React.Component {
-    
+
     // constructor(props) {
     //     super(props);
     //     //this.state.amount = props.defaultAmount;
     // }
 
-    state = {
-        amount: "0.01",
+    static defaultProps = {
+        ...Component.defaultProps,
         currency: "USD",
+        type: 'tip',
+        labelMoneyButton: 'Slide to Donate',
+        labelReference: 'Order Number',
+        labelAmount: 'Amount',
+        maxAmount: 100,
+        minAmount: .01
+    }
+
+      state = {
+        amount: "0.01",
         reference: ""
     };
 
@@ -41,6 +51,7 @@ class MoneyButtonDonate extends React.Component {
         console.log(this.state.reference);
         let amt = this.state.amount;
         let dsp = this.props.display;
+        // const configProps = {to:this.props.to, amount:amt, currency:this.state.currency};
         return (
             <div>
                 <datalist id="amounts">
@@ -86,7 +97,8 @@ class MoneyButtonDonate extends React.Component {
                         {this.props.labelAmount}
                     </div>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        <input type="number" value={amt} onChange={this.handleChangeAmount} min="1.00" max="100000.00" step="0.01" size="100px"></input>
+                        <input type="number" value={amt} onChange={this.handleChangeAmount} 
+                        min={this.props.minAmount} max={this.props.maxAmount} step="0.01" size="100px"></input>
                     </div>
                 </div>
                 ) : null}
@@ -96,7 +108,8 @@ class MoneyButtonDonate extends React.Component {
                         {this.props.labelAmount}
                     </div>
                     <div style={{...this.styleFont}}>
-                        <input type="range" min="1" max="100" id="donationamount"
+                        <input type="range" min={this.props.minAmount} max={this.props.maxAmount} 
+                            id="donationamount" step=".01"
                             list="amounts"
                             value={this.state.amount}
                             onChange={this.handleChangeAmount}></input>
@@ -107,13 +120,13 @@ class MoneyButtonDonate extends React.Component {
                     <MoneyButton
                     to={this.props.to}
                     amount={amt}
-                    currency={this.state.currency}
+                    currency={this.props.currency}
                     type={this.props.type}
                     label={this.props.labelMoneyButton}
-                    opReturnData={this.state.reference}
+                    opReturn={this.props.devMode ? null : this.state.reference}
                     onPayment={this.mbOnPaymentCallback}
                     buttonId = {this.props.buttonId}
-                    devMode={true}
+                    devMode={this.props.devMode}
                     />
                 </div>
             </div>
