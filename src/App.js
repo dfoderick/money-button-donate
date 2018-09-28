@@ -83,7 +83,7 @@ class App extends Component {
           type: mb_type,
           amount: amt,
           currency: mb_currency,
-          opReturnData: reference,
+          opReturn: reference,
           label: mb_label
         }
       );

@@ -9,8 +9,7 @@ class MoneyButtonDonate extends React.Component {
     // }
 
     state = {
-//        to: "145",
-        amount: "1",
+        amount: "0.01",
         currency: "USD",
         reference: ""
     };
@@ -28,7 +27,7 @@ class MoneyButtonDonate extends React.Component {
 
     mbOnPaymentCallback = (payment) => {
         const msg = "Do anything you want when the payment is successfull. " + JSON.stringify(payment)
-        alert(msg);
+        console.log(msg);
     }
 
     // mbOnErrorCallback = (error) => {
@@ -39,6 +38,7 @@ class MoneyButtonDonate extends React.Component {
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
         //opReturnData="money-button-donation"
+        console.log(this.state.reference);
         let amt = this.state.amount;
         let dsp = this.props.display;
         return (
