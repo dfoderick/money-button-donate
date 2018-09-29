@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-//, Button
-import { Alert, Card, CardBody,CardTitle } from 'reactstrap';
+import { Alert, Card, CardBody, CardTitle, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import { SocialIcon } from 'react-social-icons';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
@@ -17,7 +17,10 @@ class App extends Component {
     currency:"USD",
     labelMoneyButton: "Slide to Donate",
     labelAmount: "Enter Amount",
-    labelReference: "Order Number"
+    labelReference: "Order Number",
+    showSliderLive: false,
+    showDropDownLive: false,
+    showInputLive: false
   }
 
   handleChange = name => event => {
@@ -36,6 +39,23 @@ class App extends Component {
         });
       }
     }
+  }
+
+  toggleInput = () => {
+    this.setState({
+      showInputLive: !this.state.showInputLive
+    });
+    console.log("toggle input");
+  }
+  toggleSlider = () => {
+    this.setState({
+      showSliderLive: !this.state.showSliderLive
+    });
+  }
+  toggleDropDown = () => {
+    this.setState({
+      showDropDownLive: !this.state.showDropDownLive
+    });
   }
 
   styles = {
@@ -155,7 +175,7 @@ class App extends Component {
                         onCopy={() => this.setState({copied: true})}>
                         <button>Copy to clipboard</button>
                       </CopyToClipboard>
-                      {this.state.copied ? <span style={{color: 'red'}}>&nbsp;Copied</span> : null}
+                      {this.state.copied ? <span style={{color: 'red'}}>{' '}Copied</span> : null}
                     </CardTitle>
                     <div>
                       <textarea id="mb-code" rows="10" cols="80" value={code} readOnly={true}>
@@ -176,7 +196,23 @@ class App extends Component {
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 type={this.state.type} to={this.state.to}
               />
-              </CardBody>
+
+              <Button color="danger" onClick={this.toggleInput}>Try it Live!</Button>
+              <Modal isOpen={this.state.showInputLive} toggle={this.toggleInput} className={this.props.className}>
+                <ModalHeader toggle={this.toggleInput}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalBody>
+                  <MoneyButtonDonate display="input" buttonId="input-live" 
+                    devMode={false} labelMoneyButton={this.state.labelMoneyButton}
+                    labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    type={this.state.type} to={this.state.to}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.toggleInput}>Close</Button>
+                </ModalFooter>
+              </Modal>
+
+            </CardBody>
           </Card>
 
           <Card>
@@ -187,6 +223,22 @@ class App extends Component {
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 type={this.state.type} to={this.state.to}
               />
+
+              <Button color="danger" onClick={this.toggleSlider}>Try it Live!</Button>
+              <Modal isOpen={this.state.showSliderLive} toggle={this.toggleSlider} className={this.props.className}>
+                <ModalHeader toggle={this.toggleSlider}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalBody>
+                  <MoneyButtonDonate display="slider" buttonId="slider_live" 
+                    devMode={false} labelMoneyButton={this.state.labelMoneyButton}
+                    labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    type={this.state.type} to={this.state.to}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.toggleSlider}>Close</Button>
+                </ModalFooter>
+              </Modal>
+
               </CardBody>
           </Card>
 
@@ -198,6 +250,22 @@ class App extends Component {
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 type={this.state.type} to={this.state.to}
               />
+
+              <Button color="danger" onClick={this.toggleDropDown}>Try it Live!</Button>
+              <Modal isOpen={this.state.showDropDownLive} toggle={this.toggleDropDown} className={this.props.className}>
+                <ModalHeader toggle={this.toggleDropDown}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalBody>
+                  <MoneyButtonDonate display="dropdown" buttonId="dropdown_live" 
+                    devMode={false} labelMoneyButton={this.state.labelMoneyButton}
+                    labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    type={this.state.type} to={this.state.to}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={this.toggleDropDown}>Close</Button>
+                </ModalFooter>
+              </Modal>
+
               </CardBody>
           </Card>
         </div>
