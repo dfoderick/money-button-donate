@@ -28,6 +28,7 @@ class App extends Component {
     type: "buy",
     to:"",
     currency:"USD",
+    defaultAmount: "",
     labelMoneyButton: "Slide to Donate",
     labelAmount: "Enter Amount",
     labelReference: "Order Number",
@@ -155,8 +156,15 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <a target="blank" href="https://www.moneybutton.com"><img src={logo} className="App-logo" alt="logo" /></a>
-          <h1 className="App-title">Customize your MoneyButton</h1>
+        <div className="clearfix" style={{ padding: '.5rem' }}>
+          <div className="float-left">
+            <a target="blank" href="https://www.moneybutton.com"><img src={logo} className="App-logo" alt="logo" /></a>
+            <h1 className="App-title">Customize your MoneyButton</h1>
+          </div>
+          <div className="float-right" style={{"padding":"5px"}}>
+            <TwitterFollowButton screenName={'dfoderick'} />
+          </div>
+        </div>
         </header>
         <div style={{"alignText":"left", padding:"20px"}}>
           <div className="row">
@@ -182,6 +190,10 @@ class App extends Component {
                  required value={this.state.to} onChange={this.handleChange("to")}></input>
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >Default Amount</label>
+                 <input type="number" step="0.01" className="form-control" value={this.state.defaultAmount} onChange={this.handleChange("defaultAmount")}></input>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >Money Button Label</label>
                  <input type="text" className="form-control" value={this.state.labelMoneyButton} onChange={this.handleChange("labelMoneyButton")}></input>
               </div>
@@ -195,6 +207,7 @@ class App extends Component {
               </div>
 
               <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" ></label>
                 <Label check>
                   <Input type="checkbox" value={this.state.configTransactionAfterPayment} 
                   onChange={this.toggleShowTransaction}/>
@@ -203,6 +216,7 @@ class App extends Component {
                 </Label>
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" ></label>
                 <Label check>
                   <Input type="checkbox" value={this.state.configSocialMediaAfterPayment} 
                   onChange={this.toggleShowSocialMedia}/>
@@ -243,7 +257,7 @@ class App extends Component {
                   devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                   labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                   showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                  type={this.state.type} to={this.state.to}
+                  type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                 />
               </div>
               <Button color="danger" onClick={this.toggleInput} style={{height:"40px"}}>Try it Live!</Button>
@@ -254,7 +268,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    type={this.state.type} to={this.state.to}
+                    type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
                 <ModalFooter>
@@ -274,7 +288,7 @@ class App extends Component {
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                type={this.state.type} to={this.state.to}
+                type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
               <Button color="danger" onClick={this.toggleSlider} style={{height:"40px"}}>Try it Live!</Button>
@@ -285,7 +299,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    type={this.state.type} to={this.state.to}
+                    type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
                 <ModalFooter>
@@ -305,7 +319,7 @@ class App extends Component {
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                type={this.state.type} to={this.state.to}
+                type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
 
@@ -317,7 +331,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    type={this.state.type} to={this.state.to}
+                    type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
                 <ModalFooter>
@@ -339,7 +353,7 @@ class App extends Component {
                       labelAmount = "Tip Amount" labelReference = ""
                       maxAmount='50'
                       showTransaction = {false} showSocialMedia = {true}
-                      type='tip' to='145'
+                      type='tip' to='145' defaultAmount={1}
                     />
                 </div>
                 <div style={{"width":"50%", "textAlign":"right", "padding":"5px"}}>

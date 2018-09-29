@@ -22,8 +22,8 @@ class MoneyButtonDonate extends React.Component {
         hashTag:""
     }
 
-      state = {
-        amount: "0.01",
+    state = {
+        amount: "",
         reference: "",
         isAfterSwipeSuccess: false,
         lastPayment:""
@@ -59,7 +59,8 @@ class MoneyButtonDonate extends React.Component {
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
         console.log(this.state.reference);
-        let amt = this.state.amount;
+        let amt = this.state.amount || this.props.defaultAmount || 0.01;
+        let amtInput = this.state.amount || this.props.defaultAmount;
         let dsp = this.props.display;
         return (
             <div style={{"minWidth":"450px"}}>
@@ -106,7 +107,7 @@ class MoneyButtonDonate extends React.Component {
                         {this.props.labelAmount}
                     </div>
                     <div style={{fontSize:"small", ...this.styleFont}}>
-                        <input type="number" value={amt} onChange={this.handleChangeAmount} 
+                        <input type="number" value={amtInput} onChange={this.handleChangeAmount} 
                         min={this.props.minAmount} max={this.props.maxAmount} step="0.01" size="100px"></input>
                     </div>
                 </div>
