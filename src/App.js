@@ -191,15 +191,17 @@ class App extends Component {
           <Card>
             <CardBody>
             <CardTitle>Select amount with a textbox...</CardTitle>
-              <MoneyButtonDonate display="input" buttonId="input" 
-                devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
-                labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
-                type={this.state.type} to={this.state.to}
-              />
-
+              <div className="row">
+              <div style={{width:"50%"}}>
+                <MoneyButtonDonate display="input" buttonId="input" 
+                  devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
+                  labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                  type={this.state.type} to={this.state.to}
+                />
+              </div>
               <Button color="danger" onClick={this.toggleInput}>Try it Live!</Button>
               <Modal isOpen={this.state.showInputLive} toggle={this.toggleInput} className={this.props.className}>
-                <ModalHeader toggle={this.toggleInput}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalHeader toggle={this.toggleInput}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="input" buttonId="input-live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
@@ -211,22 +213,24 @@ class App extends Component {
                   <Button color="secondary" onClick={this.toggleInput}>Close</Button>
                 </ModalFooter>
               </Modal>
-
+              </div>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody>
             <CardTitle>Select amount with a slider control...</CardTitle>
+              <div className="row">
+              <div style={{width:"50%"}}>
               <MoneyButtonDonate buttonId="slider" 
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 type={this.state.type} to={this.state.to}
               />
-
+              </div>
               <Button color="danger" onClick={this.toggleSlider}>Try it Live!</Button>
               <Modal isOpen={this.state.showSliderLive} toggle={this.toggleSlider} className={this.props.className}>
-                <ModalHeader toggle={this.toggleSlider}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalHeader toggle={this.toggleSlider}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="slider" buttonId="slider_live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
@@ -238,22 +242,25 @@ class App extends Component {
                   <Button color="secondary" onClick={this.toggleSlider}>Close</Button>
                 </ModalFooter>
               </Modal>
-
+              </div>
               </CardBody>
           </Card>
 
           <Card>
             <CardBody>
             <CardTitle>Select amount with a drop down control...</CardTitle>
+              <div className="row">
+              <div style={{width:"50%"}}>
               <MoneyButtonDonate display="dropdown" buttonId="dropdown" 
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 type={this.state.type} to={this.state.to}
               />
+              </div>
 
               <Button color="danger" onClick={this.toggleDropDown}>Try it Live!</Button>
               <Modal isOpen={this.state.showDropDownLive} toggle={this.toggleDropDown} className={this.props.className}>
-                <ModalHeader toggle={this.toggleDropDown}>Button is live! Use small amounts for testing!</ModalHeader>
+                <ModalHeader toggle={this.toggleDropDown}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="dropdown" buttonId="dropdown_live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
@@ -265,7 +272,7 @@ class App extends Component {
                   <Button color="secondary" onClick={this.toggleDropDown}>Close</Button>
                 </ModalFooter>
               </Modal>
-
+              </div>
               </CardBody>
           </Card>
         </div>
