@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
+import { Button } from 'reactstrap';
+import { TwitterShareButton, TwitterFollowButton, TwitterHashtagButton} from 'react-twitter-embed';
+// import {
+//     TwitterShareButton, TwitterIcon
+//   } from 'react-share';
 
 class MoneyButtonDonate extends React.Component {
-
-    // constructor(props) {
-    //     super(props);
-    //     //this.state.amount = props.defaultAmount;
-    // }
 
     static defaultProps = {
         ...Component.defaultProps,
@@ -16,12 +16,17 @@ class MoneyButtonDonate extends React.Component {
         labelReference: 'Order Number',
         labelAmount: 'Amount',
         maxAmount: 100,
-        minAmount: .01
+        minAmount: .01,
+        showTransaction: false,
+        showSocialMedia: false,
+        hashTag:""
     }
 
       state = {
         amount: "0.01",
-        reference: ""
+        reference: "",
+        isAfterSwipeSuccess: false,
+        lastPayment:""
     };
 
     handleChangeAmount = event => {
@@ -36,24 +41,28 @@ class MoneyButtonDonate extends React.Component {
       };
 
     mbOnPaymentCallback = (payment) => {
-        const msg = "Do anything you want when the payment is successfull. " + JSON.stringify(payment)
+        const msg = JSON.stringify(payment)
         console.log(msg);
+        this.setState({isAfterSwipeSuccess: true});
+        this.setState({lastPayment: payment});
     }
 
-    // mbOnErrorCallback = (error) => {
-    //     alert(error);
-    // }
-    // onError = {this.mbOnErrorCallback}
+    mbOnErrorCallback = (error) => {
+        // alert(error);
+        this.setState({isAfterSwipeSuccess: false});
+    }
+
+    clickTransaction = () => {
+        window.open(`https://explorer.bitcoin.com/bch/tx/${this.state.lastPayment["txid"]}`, '_blank');
+    }
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
-        //opReturnData="money-button-donation"
         console.log(this.state.reference);
         let amt = this.state.amount;
         let dsp = this.props.display;
-        // const configProps = {to:this.props.to, amount:amt, currency:this.state.currency};
         return (
-            <div>
+            <div style={{"minWidth":"450px"}}>
                 <datalist id="amounts">
                 <option value="1" label="$1"/>
                 <option value="5"/>
@@ -128,6 +137,14 @@ class MoneyButtonDonate extends React.Component {
                     buttonId = {this.props.buttonId}
                     devMode={this.props.devMode}
                     />
+                    {this.state.isAfterSwipeSuccess && this.props.showTransaction ? (
+                        <Button onClick={this.clickTransaction}>Tx</Button>
+                    ):null}
+                    {this.state.isAfterSwipeSuccess && this.props.showSocialMedia ? (
+                        <TwitterHashtagButton
+                            tag={'moneybutton'}
+                        />
+                    ):null}
                 </div>
             </div>
         )

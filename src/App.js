@@ -1,23 +1,38 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Alert, Card, CardBody, CardTitle, Button } from 'reactstrap';
+import { Alert, Card, CardBody, CardTitle, Button, Input, Label } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import { SocialIcon } from 'react-social-icons';
+import { TwitterShareButton, TwitterFollowButton, TwitterHashtagButton} from 'react-twitter-embed';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import axios from 'axios'
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    //$oauth_client = new Oauth($consumerKey,$consumerSecret);
+    axios.get('https://auth.moneybutton.com/oauth/v1/whoami')
+      .then(response => this.state.to = response["id"])
+      .catch(error => {
+        this.state.to = "0";
+        console.error(error);
+      });
+
+  }
 
   state = {
     copied: false,
     devMode: true,
     type: "buy",
-    to:"0",
+    to:"",
     currency:"USD",
     labelMoneyButton: "Slide to Donate",
     labelAmount: "Enter Amount",
     labelReference: "Order Number",
+    configTransactionAfterPayment: false,
+    configSocialMediaAfterPayment: false,
     showSliderLive: false,
     showDropDownLive: false,
     showInputLive: false
@@ -55,6 +70,18 @@ class App extends Component {
   toggleDropDown = () => {
     this.setState({
       showDropDownLive: !this.state.showDropDownLive
+    });
+  }
+
+  toggleShowTransaction = () => {
+    this.setState({
+      configTransactionAfterPayment: !this.state.configTransactionAfterPayment
+    });
+  }
+
+  toggleShowSocialMedia = () => {
+    this.setState({
+      configSocialMediaAfterPayment: !this.state.configSocialMediaAfterPayment
     });
   }
 
@@ -151,7 +178,8 @@ class App extends Component {
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >Send to (User Number or address)</label>
-                 <input type="text" className="form-control" value={this.state.to} onChange={this.handleChange("to")}></input>
+                 <input type="text" className="form-control" 
+                 required value={this.state.to} onChange={this.handleChange("to")}></input>
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >Money Button Label</label>
@@ -165,6 +193,24 @@ class App extends Component {
               <label className="col-sm-4 col-form-label" >Prompt for Reference</label>
                  <input type="text" className="form-control" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
               </div>
+
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <Label check>
+                  <Input type="checkbox" value={this.state.configTransactionAfterPayment} 
+                  onChange={this.toggleShowTransaction}/>
+                  {' '}
+                  Show Transaction
+                </Label>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <Label check>
+                  <Input type="checkbox" value={this.state.configSocialMediaAfterPayment} 
+                  onChange={this.toggleShowSocialMedia}/>
+                  {' '}
+                  Show Social Media
+                </Label>
+              </div>
+
               </div>
               </CardBody>
             </Card>
@@ -196,16 +242,18 @@ class App extends Component {
                 <MoneyButtonDonate display="input" buttonId="input" 
                   devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                   labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                  showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                   type={this.state.type} to={this.state.to}
                 />
               </div>
-              <Button color="danger" onClick={this.toggleInput}>Try it Live!</Button>
-              <Modal isOpen={this.state.showInputLive} toggle={this.toggleInput} className={this.props.className}>
+              <Button color="danger" onClick={this.toggleInput} style={{height:"40px"}}>Try it Live!</Button>
+              <Modal isOpen={this.state.showInputLive} toggle={this.toggleInput} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleInput}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="input" buttonId="input-live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                     type={this.state.type} to={this.state.to}
                   />
                 </ModalBody>
@@ -225,16 +273,18 @@ class App extends Component {
               <MoneyButtonDonate buttonId="slider" 
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                 type={this.state.type} to={this.state.to}
               />
               </div>
-              <Button color="danger" onClick={this.toggleSlider}>Try it Live!</Button>
-              <Modal isOpen={this.state.showSliderLive} toggle={this.toggleSlider} className={this.props.className}>
+              <Button color="danger" onClick={this.toggleSlider} style={{height:"40px"}}>Try it Live!</Button>
+              <Modal isOpen={this.state.showSliderLive} toggle={this.toggleSlider} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleSlider}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="slider" buttonId="slider_live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                     type={this.state.type} to={this.state.to}
                   />
                 </ModalBody>
@@ -254,17 +304,19 @@ class App extends Component {
               <MoneyButtonDonate display="dropdown" buttonId="dropdown" 
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                 type={this.state.type} to={this.state.to}
               />
               </div>
 
-              <Button color="danger" onClick={this.toggleDropDown}>Try it Live!</Button>
-              <Modal isOpen={this.state.showDropDownLive} toggle={this.toggleDropDown} className={this.props.className}>
+              <Button color="danger" onClick={this.toggleDropDown} style={{height:"40px"}}>Try it Live!</Button>
+              <Modal isOpen={this.state.showDropDownLive} toggle={this.toggleDropDown} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleDropDown}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
                   <MoneyButtonDonate display="dropdown" buttonId="dropdown_live" 
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
+                    showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
                     type={this.state.type} to={this.state.to}
                   />
                 </ModalBody>
@@ -286,12 +338,12 @@ class App extends Component {
                       devMode={false} labelMoneyButton="Tip me"
                       labelAmount = "Tip Amount" labelReference = ""
                       maxAmount='50'
+                      showTransaction = {false} showSocialMedia = {true}
                       type='tip' to='145'
                     />
                 </div>
                 <div style={{"width":"50%", "textAlign":"right", "padding":"5px"}}>
-                  <a href="https://twitter.com/dfoderick?ref_src=twsrc%5Etfw" className="twitter-follow-button" data-show-count="false">Follow @dfoderick</a><script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
-                  <SocialIcon url="http://twitter.com/dfoderick" style={{ height: 35, width: 35, margin:"5px" }} />
+                  <TwitterFollowButton screenName={'dfoderick'} />
                 </div>
               </div>
             </CardBody>
