@@ -4,29 +4,17 @@ import './App.css';
 import { Alert, Card, CardBody, CardTitle, Button, Input, Label } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
-import { SocialIcon } from 'react-social-icons';
-import { TwitterShareButton, TwitterFollowButton, TwitterHashtagButton} from 'react-twitter-embed';
+import { TwitterFollowButton } from 'react-twitter-embed';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import axios from 'axios'
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    //$oauth_client = new Oauth($consumerKey,$consumerSecret);
-    axios.get('https://auth.moneybutton.com/oauth/v1/whoami')
-      .then(response => this.state.to = response["id"])
-      .catch(error => {
-        this.state.to = "0";
-        console.error(error);
-      });
-
-  }
 
   state = {
     copied: false,
     devMode: true,
     type: "buy",
-    to:"",
+    to:"0",
     currency:"USD",
     defaultAmount: "",
     labelMoneyButton: "Slide to Donate",
@@ -37,6 +25,26 @@ class App extends Component {
     showSliderLive: false,
     showDropDownLive: false,
     showInputLive: false
+  }
+
+  componentDidMount() {
+
+    // let tokenKey="mb_js_client:oauth_access_token";
+    // console.log(tokenKey);
+    // if (localStorage.hasOwnProperty(tokenKey)) {
+    //   let token = localStorage.getItem(tokenKey);
+    //   console.log(token);
+    //   //$oauth_client = new Oauth($consumerKey,$consumerSecret);
+    //   axios.get('https://auth.moneybutton.com/oauth/v1/whoami')
+    //     .then(response => this.setState({to:response["id"]}))
+    //     .catch(error => {
+    //       this.setState({to:0});
+    //       console.error(error);
+    //     });
+    // } else {
+    //   console.log("no token");
+    // }
+
   }
 
   handleChange = name => event => {
@@ -184,7 +192,7 @@ class App extends Component {
                 &nbsp;
                 <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
               </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
+              <div className="col-md-12 form-group alert" style={{...this.styles}} >
                 <label className="col-sm-4 col-form-label" >Send to (User Number or address)</label>
                  <input type="text" className="form-control" 
                  required value={this.state.to} onChange={this.handleChange("to")}></input>
@@ -353,7 +361,7 @@ class App extends Component {
                       labelAmount = "Tip Amount" labelReference = ""
                       maxAmount='50'
                       showTransaction = {false} showSocialMedia = {true}
-                      type='tip' to='145' defaultAmount={1}
+                      type='tip' to='145' defaultAmount="1"
                     />
                 </div>
                 <div style={{"width":"50%", "textAlign":"right", "padding":"5px"}}>

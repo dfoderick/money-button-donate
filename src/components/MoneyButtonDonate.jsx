@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
 import { Button } from 'reactstrap';
-import { TwitterShareButton, TwitterFollowButton, TwitterHashtagButton} from 'react-twitter-embed';
+import { TwitterShareButton } from 'react-twitter-embed';
 // import {
 //     TwitterShareButton, TwitterIcon
 //   } from 'react-share';
@@ -59,7 +59,7 @@ class MoneyButtonDonate extends React.Component {
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
         console.log(this.state.reference);
-        let amt = this.state.amount || this.props.defaultAmount || 0.01;
+        let amt = this.state.amount || this.props.defaultAmount || "0.01";
         let amtInput = this.state.amount || this.props.defaultAmount;
         let dsp = this.props.display;
         return (
@@ -138,14 +138,19 @@ class MoneyButtonDonate extends React.Component {
                     buttonId = {this.props.buttonId}
                     devMode={this.props.devMode}
                     />
-                    {this.state.isAfterSwipeSuccess && this.props.showTransaction ? (
+                        {this.state.isAfterSwipeSuccess && this.props.showTransaction ? (
+                        <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
                         <Button onClick={this.clickTransaction}>Tx</Button>
-                    ):null}
-                    {this.state.isAfterSwipeSuccess && this.props.showSocialMedia ? (
-                        <TwitterHashtagButton
-                            tag={'moneybutton'}
-                        />
-                    ):null}
+                        </div>
+                        ):null}
+                        {this.state.isAfterSwipeSuccess && this.props.showSocialMedia ? (
+                            <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
+                             <TwitterShareButton
+                                url={'https://moneybutton.com'}
+                                options={{ text: '#moneybutton is awesome' }}
+                                />
+                             </div>
+                        ):null}
                 </div>
             </div>
         )
