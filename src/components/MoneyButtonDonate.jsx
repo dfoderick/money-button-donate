@@ -23,6 +23,8 @@ class MoneyButtonDonate extends React.Component {
     }
 
     state = {
+        isDebug: false,
+        debugTxid: "50eac9fafcbb060779f37bca4e54f5ff5e179656ba6bd2788530de7e89b62047",
         amount: "",
         reference: "",
         isAfterSwipeSuccess: false,
@@ -53,7 +55,13 @@ class MoneyButtonDonate extends React.Component {
     }
 
     clickTransaction = () => {
-        window.open(`https://explorer.bitcoin.com/bch/tx/${this.state.lastPayment["txid"]}`, '_blank');
+        let txid = "invalid";
+        if(this.state.lastPayment && this.state.lastPayment.hasOwnProperty('txid')) {
+            txid = this.state.lastPayment["txid"];
+        } else if (this.state.isDebug) {
+            txid = this.state.debugTxid;
+        }
+        window.open(`https://explorer.bitcoin.com/bch/tx/${txid}`, '_blank');
     }
 
     render() {
@@ -138,19 +146,21 @@ class MoneyButtonDonate extends React.Component {
                     buttonId = {this.props.buttonId}
                     devMode={this.props.devMode}
                     />
-                        {this.state.isAfterSwipeSuccess && this.props.showTransaction ? (
                         <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
-                        <Button onClick={this.clickTransaction}>Tx</Button>
-                        </div>
+                        {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showTransaction) ? (
+                            <div style={{padding:"1px"}}>
+                            <Button onClick={this.clickTransaction} style={{height:"30px", width:"75px", padding:"3px"}}>Receipt</Button>
+                            </div>
                         ):null}
-                        {this.state.isAfterSwipeSuccess && this.props.showSocialMedia ? (
-                            <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
-                             <TwitterShareButton
+                        {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showSocialMedia) ? (
+                            <div style={{padding:"1px"}}>
+                            <TwitterShareButton
                                 url={'https://moneybutton.com'}
-                                options={{ text: '#moneybutton is awesome' }}
+                                options={{ text: '#moneybutton is awesome', size: 'large' }}
                                 />
                              </div>
                         ):null}
+                        </div>
                 </div>
             </div>
         )

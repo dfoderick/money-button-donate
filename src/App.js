@@ -220,7 +220,7 @@ class App extends Component {
                   <Input type="checkbox" value={this.state.configTransactionAfterPayment} 
                   onChange={this.toggleShowTransaction}/>
                   {' '}
-                  Show Transaction
+                  Show Receipt
                 </Label>
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
