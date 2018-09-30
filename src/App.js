@@ -6,6 +6,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import { TwitterFollowButton } from 'react-twitter-embed';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import DonateToMe from './components/DonateToMe.jsx'
 import axios from 'axios'
 
 class App extends Component {
@@ -351,25 +352,7 @@ class App extends Component {
           </Card>
         </div>
 
-          <Card className="card text-white bg-dark mb-6">
-            <CardBody>
-              <CardTitle>If you found this site useful then please consider leaving a tip for the author.</CardTitle>
-              <div className="row">
-                <div style={{"padding":"5px"}}>
-                  <MoneyButtonDonate display="slider" buttonId="dropdown" 
-                      devMode={false} labelMoneyButton="Tip me"
-                      labelAmount = "Tip Amount" labelReference = ""
-                      maxAmount='50'
-                      showTransaction = {false} showSocialMedia = {true}
-                      type='tip' to='145' defaultAmount="1"
-                    />
-                </div>
-                <div style={{"width":"50%", "textAlign":"right", "padding":"5px"}}>
-                  <TwitterFollowButton screenName={'dfoderick'} />
-                </div>
-              </div>
-            </CardBody>
-          </Card>
+        <DonateToMe></DonateToMe>
       </div>
     );
   }
