@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import { Alert, Card, CardBody, CardTitle, Button, Input, Label } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import classnames from 'classnames';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import { TwitterFollowButton } from 'react-twitter-embed';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
@@ -23,10 +25,15 @@ class App extends Component {
     labelReference: "Order Number",
     configTransactionAfterPayment: false,
     configSocialMediaAfterPayment: false,
+    buttonId:"",
+    buttonData:"",
+    clientIdentifier:"",
+    hideAmount: false,
     showSliderLive: false,
     showDropDownLive: false,
-    showInputLive: false
-  }
+    showInputLive: false,
+    activeTab: 'common'
+    }
 
   componentDidMount() {
 
@@ -98,6 +105,14 @@ class App extends Component {
   styles = {
     padding: '3px'
   };
+
+  toggleTab(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
 
   render() {
 
@@ -183,10 +198,35 @@ class App extends Component {
           </div>
           <div>
             <div className="row">
+
             <Card style={{"width":"50%"}}>
-            <CardBody>
+              <CardBody>
               <CardTitle>Customize your Money Button</CardTitle>
-            <div className="form-group form-inline" style={{"float":"left"}}>
+
+              <Nav tabs>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === 'common' })}
+                  onClick={() => { this.toggleTab('common'); }}
+                >
+                  Common Settings
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === 'advanced' })}
+                  onClick={() => { this.toggleTab('advanced'); }}
+                >
+                  Advanced
+                </NavLink>
+              </NavItem>
+            </Nav>
+
+              <TabContent activeTab={this.state.activeTab}>
+          <TabPane tabId="common">
+            <Row>
+              <Col sm="12">
+              <div className="form-group form-inline" style={{"float":"left"}}>
             <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >Type</label>
                 <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
@@ -215,6 +255,14 @@ class App extends Component {
                  <input type="text" className="form-control" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
               </div>
 
+              </div>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="advanced">
+            <Row>
+              <Col sm="12">
+              <div className="form-group form-inline" style={{"float":"left"}}>
               <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" ></label>
                 <Label check>
@@ -233,8 +281,25 @@ class App extends Component {
                   Show Social Media
                 </Label>
               </div>
-
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >ButtonId</label>
+                 <input type="text" className="form-control" value={this.state.buttonId} onChange={this.handleChange("buttonId")}></input>
               </div>
+              
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >ButtonData</label>
+                 <input type="text" className="form-control" value={this.state.buttonData} onChange={this.handleChange("buttonData")}></input>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >ClientIdentifier</label>
+                 <input type="text" className="form-control" value={this.state.clientIdentifier} onChange={this.handleChange("clientIdentifier")}></input>
+              </div>
+              </div>
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
+
               </CardBody>
             </Card>
             <Card style={{"width":"50%"}}>
@@ -262,10 +327,11 @@ class App extends Component {
             <CardTitle>Select amount with a textbox...</CardTitle>
               <div className="row">
               <div style={{width:"50%"}}>
-                <MoneyButtonDonate display="input" buttonId="input" 
+                <MoneyButtonDonate display="input"
                   devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                   labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                   showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                  buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                   type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                 />
               </div>
@@ -273,10 +339,11 @@ class App extends Component {
               <Modal isOpen={this.state.showInputLive} toggle={this.toggleInput} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleInput}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
-                  <MoneyButtonDonate display="input" buttonId="input-live" 
+                  <MoneyButtonDonate display="input"
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
@@ -293,10 +360,11 @@ class App extends Component {
             <CardTitle>Select amount with a slider control...</CardTitle>
               <div className="row">
               <div style={{width:"50%"}}>
-              <MoneyButtonDonate buttonId="slider" 
+              <MoneyButtonDonate display="slider" 
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                 type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
@@ -304,10 +372,11 @@ class App extends Component {
               <Modal isOpen={this.state.showSliderLive} toggle={this.toggleSlider} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleSlider}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
-                  <MoneyButtonDonate display="slider" buttonId="slider_live" 
+                  <MoneyButtonDonate display="slider"
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
@@ -324,10 +393,11 @@ class App extends Component {
             <CardTitle>Select amount with a drop down control...</CardTitle>
               <div className="row">
               <div style={{width:"50%"}}>
-              <MoneyButtonDonate display="dropdown" buttonId="dropdown" 
+              <MoneyButtonDonate display="dropdown"
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                 type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
@@ -336,10 +406,11 @@ class App extends Component {
               <Modal isOpen={this.state.showDropDownLive} toggle={this.toggleDropDown} size="lg" className={this.props.className}>
                 <ModalHeader toggle={this.toggleDropDown}>This button is live! Use small amounts for testing</ModalHeader>
                 <ModalBody>
-                  <MoneyButtonDonate display="dropdown" buttonId="dropdown_live" 
+                  <MoneyButtonDonate display="dropdown"
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
+                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
