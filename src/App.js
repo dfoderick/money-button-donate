@@ -25,13 +25,16 @@ class App extends Component {
     configTransactionAfterPayment: false,
     configSocialMediaAfterPayment: false,
     buttonId:"",
-    buttonData:"",
     clientIdentifier:"",
     hideAmount: false,
     showSliderLive: false,
     showDropDownLive: false,
     showInputLive: false,
-    activeTab: 'common'
+    activeTab: 'common',
+    website: '',
+    category: '',
+    description: '',
+    owner:''
     }
 
   componentDidMount() {
@@ -176,6 +179,8 @@ class App extends Component {
   </script>
       `;
 
+    const buttonData = JSON.stringify({"website":this.state.website,"category":this.state.category,"description":this.state.description,"owner":this.state.owner});
+
     return (
       <div className="App">
         <Header></Header>
@@ -199,6 +204,14 @@ class App extends Component {
                   onClick={() => { this.toggleTab('common'); }}
                 >
                   Common Settings
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === 'buttondata' })}
+                  onClick={() => { this.toggleTab('buttondata'); }}
+                >
+                  ButtonData
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -248,6 +261,35 @@ class App extends Component {
               </Col>
             </Row>
           </TabPane>
+
+          <TabPane tabId="buttondata">
+            <Row>
+              <Col sm="12">
+              <div className="form-group form-inline" style={{"float":"left"}}>
+              
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >website</label>
+                 <input type="text" className="form-control" value={this.state.website} onChange={this.handleChange("website")}></input>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >category</label>
+                 <input type="text" className="form-control" value={this.state.category} onChange={this.handleChange("category")}></input>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >description</label>
+                 <input type="text" className="form-control" value={this.state.description} onChange={this.handleChange("description")}></input>
+              </div>
+              <div className="col-md-12 form-group" style={{...this.styles}}>
+                <label className="col-sm-4 col-form-label" >owner</label>
+                 <input type="text" className="form-control" value={this.state.owner} onChange={this.handleChange("owner")}></input>
+              </div>
+
+              </div>
+              </Col>
+            </Row>
+          </TabPane>
+
+
           <TabPane tabId="advanced">
             <Row>
               <Col sm="12">
@@ -275,10 +317,6 @@ class App extends Component {
                  <input type="text" className="form-control" value={this.state.buttonId} onChange={this.handleChange("buttonId")}></input>
               </div>
               
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >ButtonData</label>
-                 <input type="text" className="form-control" value={this.state.buttonData} onChange={this.handleChange("buttonData")}></input>
-              </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
                 <label className="col-sm-4 col-form-label" >ClientIdentifier</label>
                  <input type="text" className="form-control" value={this.state.clientIdentifier} onChange={this.handleChange("clientIdentifier")}></input>
@@ -320,7 +358,7 @@ class App extends Component {
                   devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                   labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                   showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                  buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                  buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                   type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                 />
               </div>
@@ -332,7 +370,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                    buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
@@ -353,7 +391,7 @@ class App extends Component {
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                 type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
@@ -365,7 +403,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                    buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
@@ -386,7 +424,7 @@ class App extends Component {
                 devMode={this.state.devMode} labelMoneyButton={this.state.labelMoneyButton}
                 labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                 showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                 type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
               />
               </div>
@@ -399,7 +437,7 @@ class App extends Component {
                     devMode={false} labelMoneyButton={this.state.labelMoneyButton}
                     labelAmount = {this.state.labelAmount} labelReference = {this.state.labelReference}
                     showTransaction = {this.state.configTransactionAfterPayment} showSocialMedia = {this.state.configSocialMediaAfterPayment}
-                    buttonId={this.state.buttonId} buttonData={this.state.buttonData} clientIdentifier={this.state.clientIdentifier}
+                    buttonId={this.state.buttonId} buttonData={buttonData} clientIdentifier={this.state.clientIdentifier}
                     type={this.state.type} to={this.state.to} defaultAmount={this.state.defaultAmount}
                   />
                 </ModalBody>
