@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
 import { Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { TwitterShareButton } from 'react-twitter-embed';
+import Receipt from './Receipt.jsx'
 // import {
 //     TwitterShareButton, TwitterIcon
 //   } from 'react-share';
@@ -19,7 +21,10 @@ class MoneyButtonDonate extends React.Component {
         minAmount: .01,
         showTransaction: false,
         showSocialMedia: false,
-        hashTag:""
+        hashTag:"",
+        buttonId: null,
+        buttonData: null,
+        clientIdentifier: null
     }
 
     state = {
@@ -28,7 +33,9 @@ class MoneyButtonDonate extends React.Component {
         amount: "",
         reference: "",
         isAfterSwipeSuccess: false,
-        lastPayment:""
+        lastPayment:"",
+        openReceipt: false,
+        txid:""
     };
 
     handleChangeAmount = event => {
@@ -50,8 +57,10 @@ class MoneyButtonDonate extends React.Component {
     }
 
     mbOnErrorCallback = (error) => {
-        // alert(error);
+        //there is a bug in moneybutton
+        //api errors do not bubble up to ui
         this.setState({isAfterSwipeSuccess: false});
+        alert(JSON.stringify(error));
     }
 
     clickTransaction = () => {
@@ -61,8 +70,17 @@ class MoneyButtonDonate extends React.Component {
         } else if (this.state.isDebug) {
             txid = this.state.debugTxid;
         }
-        window.open(`https://explorer.bitcoin.com/bch/tx/${txid}`, '_blank');
+        this.setState({txid: txid});
+        this.setState({openReceipt: true});
     }
+
+    showRawTransaction = () => {
+        window.open(`https://explorer.bitcoin.com/bch/tx/${this.state.txid}`, '_blank');
+    }
+
+    toggleReceipt = () => {
+        this.setState({openReceipt: !this.state.openReceipt});
+      }
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
@@ -136,20 +154,39 @@ class MoneyButtonDonate extends React.Component {
                 ) : null}
                 <div style={{float:"left"}}>
                     <MoneyButton
-                    to={this.props.to}
-                    amount={amt}
-                    currency={this.props.currency}
-                    type={this.props.type}
-                    label={this.props.labelMoneyButton}
-                    opReturn={this.props.devMode ? null : this.state.reference}
-                    onPayment={this.mbOnPaymentCallback}
-                    buttonId = {this.props.buttonId}
-                    devMode={this.props.devMode}
+                        to={this.props.to}
+                        clientIdentifier={this.props.clientIdentifier}
+                        amount={amt}
+                        currency={this.props.currency}
+                        type={this.props.type}
+                        label={this.props.labelMoneyButton}
+                        opReturn={this.props.devMode ? null : this.state.reference}
+                        onPayment={this.mbOnPaymentCallback}
+                        onError={this.mbOnErrorCallback}
+                        buttonId = {this.props.buttonId}
+                        devMode={this.props.devMode}
+                        buttonData={this.props.buttonData}
                     />
                         <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
-                        {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showTransaction) ? (
+                        {this.state.isDebug || this.state.openReceipt || (this.state.isAfterSwipeSuccess && this.props.showTransaction) ? (
                             <div style={{padding:"1px"}}>
-                            <Button onClick={this.clickTransaction} style={{height:"30px", width:"75px", padding:"3px"}}>Receipt</Button>
+                            <Button onClick={this.clickTransaction} style={{height:"30px", width:"75px", padding:"3px"}}
+                            >
+                                Receipt
+                            </Button>
+
+                            <Modal isOpen={this.state.openReceipt} toggle={this.toggleReceipt} size="lg">
+                            <ModalHeader toggle={this.toggleReceipt}>Transaction Receipt</ModalHeader>
+                            <ModalBody>
+                                <Receipt txid={this.state.txid}></Receipt>
+                            </ModalBody>
+                            <ModalFooter>
+                                {/* <Button color="primary" onClick={this.toggleReceipt}>Print</Button>{' '} */}
+                                <Button color="primary" onClick={this.showRawTransaction}>Raw Tx</Button>{' '}
+                                <Button color="secondary" onClick={this.toggleReceipt}>Close</Button>
+                            </ModalFooter>
+                            </Modal>
+
                             </div>
                         ):null}
                         {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showSocialMedia) ? (
