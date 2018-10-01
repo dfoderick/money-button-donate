@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { TwitterShareButton } from 'react-twitter-embed';
 import Receipt from './Receipt.jsx'
+import ReactToPrint from "react-to-print";
 // import {
 //     TwitterShareButton, TwitterIcon
 //   } from 'react-share';
@@ -178,11 +179,15 @@ class MoneyButtonDonate extends React.Component {
                             <Modal isOpen={this.state.openReceipt} toggle={this.toggleReceipt} size="lg">
                             <ModalHeader toggle={this.toggleReceipt}>Transaction Receipt</ModalHeader>
                             <ModalBody>
-                                <Receipt txid={this.state.txid}></Receipt>
+                                <Receipt txid={this.state.txid} ref={el => (this.componentRef = el)}></Receipt>
                             </ModalBody>
                             <ModalFooter>
-                                {/* <Button color="primary" onClick={this.toggleReceipt}>Print</Button>{' '} */}
-                                <Button color="primary" onClick={this.showRawTransaction}>Raw Tx</Button>{' '}
+                                <ReactToPrint
+                                trigger={() => <Button color="primary">Print</Button>}
+                                content={() => this.componentRef}
+                                />
+                                {' '}
+                                <Button color="secondary" onClick={this.showRawTransaction}>Transaction</Button>{' '}
                                 <Button color="secondary" onClick={this.toggleReceipt}>Close</Button>
                             </ModalFooter>
                             </Modal>
