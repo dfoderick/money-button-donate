@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header.jsx'
 import { Alert, Card, CardBody, CardTitle, Button, Input, Label } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
-import { TwitterFollowButton } from 'react-twitter-embed';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import DonateToMe from './components/DonateToMe.jsx'
 import axios from 'axios'
@@ -179,17 +178,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-        <div className="clearfix" style={{ padding: '.5rem' }}>
-          <div className="float-left">
-            <a target="blank" href="https://www.moneybutton.com"><img src={logo} className="App-logo" alt="logo" /></a>
-            <h1 className="App-title">Customize your MoneyButton</h1>
-          </div>
-          <div className="float-right" style={{"padding":"5px"}}>
-            <TwitterFollowButton screenName={'dfoderick'} />
-          </div>
-        </div>
-        </header>
+        <Header></Header>
         <div style={{"alignText":"left", padding:"20px"}}>
           <div className="row">
             <div style={{"width":"50%"}}>
@@ -278,7 +267,7 @@ class App extends Component {
                   <Input type="checkbox" value={this.state.configSocialMediaAfterPayment} 
                   onChange={this.toggleShowSocialMedia}/>
                   {' '}
-                  Show Social Media
+                  Share on Social Media
                 </Label>
               </div>
               <div className="col-md-12 form-group" style={{...this.styles}}>
