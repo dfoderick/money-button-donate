@@ -3,20 +3,20 @@ import './App.css';
 import Header from './components/Header.jsx'
 import { Alert, Card, CardBody, CardTitle, Button, Input, Label } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { Container, TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { Form, FormGroup, FormFeedback, FormText } from 'reactstrap';
 import classnames from 'classnames';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
 import DonateToMe from './components/DonateToMe.jsx'
+import JsCopyClipboard from './components/JsCopyClipboard'
 import axios from 'axios'
 
 class App extends Component {
 
   state = {
-    copied: false,
     devMode: true,
     type: "buy",
-    to:"0",
+    to:"",
     currency:"USD",
     defaultAmount: "",
     labelMoneyButton: "Slide to Donate",
@@ -79,7 +79,6 @@ class App extends Component {
     this.setState({
       showInputLive: !this.state.showInputLive
     });
-    console.log("toggle input");
   }
   toggleSlider = () => {
     this.setState({
@@ -117,67 +116,6 @@ class App extends Component {
   }
 
   render() {
-
-    let code=`
-    <div style="padding:5px">
-    <div>
-      ${this.state.labelReference}
-    </div>
-    <div>
-      <input type="text" maxLength="20" id="pay-reference" size="15" name="pay-reference" onkeyup="return changeReference(this, event);"></input>
-    </div>
-    <div>
-      ${this.state.labelAmount}
-    </div>
-    <div>
-      <input type="number" min="0.01" max="100000.00" step="0.01" size="100px" onkeyup="return changeAmount(this, event);" id="pay-amount" name="pay-amount"></input>
-    </div>
-  </div>
-  
-  <div id="pay-button"></div>
-  <script src="https://api.moneybutton.com/moneybutton.js"></script>
-  <script>
-    const mb_to = '${this.state.to}';
-    const mb_type = '${this.state.type}';
-    const mb_currency = '${this.state.currency}';
-    const mb_label = '${this.state.labelMoneyButton}';
-    moneyButton.render(
-      document.getElementById('pay-button'), {
-        to: mb_to,
-        type: mb_type,
-        amount: 0,
-        currency: mb_currency,
-        label: mb_label
-      }
-    );
-  
-    function renderMoneyButton(amt, reference) {
-      moneyButton.render(
-        document.getElementById('pay-button'), {
-          to: mb_to,
-          type: mb_type,
-          amount: amt,
-          currency: mb_currency,
-          opReturn: reference,
-          label: mb_label
-        }
-      );
-    }
-  
-    function changeAmount(obj, event) {
-      if (event.target.value) {
-        renderMoneyButton(event.target.value, document.getElementById('pay-reference').value);
-      }
-    }
-  
-    function changeReference(obj, event) {
-      if (event.target.value) {
-        renderMoneyButton(document.getElementById('pay-amount').value, event.target.value);
-      }
-    }
-  
-  </script>
-      `;
 
     const buttonData = JSON.stringify({"website":this.state.website,"category":this.state.category,"description":this.state.description,"owner":this.state.owner});
 
@@ -226,75 +164,135 @@ class App extends Component {
 
               <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="common">
-            <Row>
-              <Col sm="12">
-              <div className="form-group form-inline" style={{"float":"left"}}>
-            <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >Type</label>
-                <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
-                &nbsp;
-                <input type="radio" radioGroup="type" className="form-control" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
-              </div>
-              <div className="col-md-12 form-group alert" style={{...this.styles}} >
-                <label className="col-sm-4 col-form-label" >Send to (User Number or address)</label>
-                 <input type="text" className="form-control" 
-                 required value={this.state.to} onChange={this.handleChange("to")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >Default Amount</label>
-                 <input type="number" step="0.01" className="form-control" value={this.state.defaultAmount} onChange={this.handleChange("defaultAmount")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >Money Button Label</label>
-                 <input type="text" className="form-control" value={this.state.labelMoneyButton} onChange={this.handleChange("labelMoneyButton")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >Prompt for Amount</label>
-                 <input type="text" className="form-control" value={this.state.labelAmount} onChange={this.handleChange("labelAmount")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-              <label className="col-sm-4 col-form-label" >Prompt for Reference</label>
-                 <input type="text" className="form-control" value={this.state.labelReference} onChange={this.handleChange("labelReference")}></input>
-              </div>
+          <Container>
+            <Form className="form">
+              <Row>
+                <Col style={{width:"50%"}}>
+                <Label>Button Behavior</Label>
+                </Col>
+                <Col>
+                <input type="radio" radioGroup="type" checked={this.state.type === 'tip'} onChange={this.updateType('tip')}></input> Tip
+                {' '}            
+                <input type="radio" radioGroup="type" checked={this.state.type === 'buy'} onChange={this.updateType('buy')}></input> Buy
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="6">
+                  <Label>Send to (User Number or address)</Label>
+                </Col>
+                <Col xs="6">
+                  <FormGroup>
+                    <FormText>User is required for Button to work!</FormText>
+                    <Input type="text" placeholder="Send To User Number or address" valid={false}
+                    required value={this.state.to} onChange={this.handleChange("to")}></Input>
+                    <FormFeedback invalid>
+                      A Money Button User Number is required! Otherwise the Try it Now buttons will not work!
+                    </FormFeedback>
+                  </FormGroup>
+                 </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Default Amount</Label>
+                </Col>
+                <Col>
+                 <Input type="number" step="0.01" value={this.state.defaultAmount} 
+                 onChange={this.handleChange("defaultAmount")}
+                 placeholder="Default Amount"></Input>
+                 </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Money Button Label</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.labelMoneyButton} 
+                 onChange={this.handleChange("labelMoneyButton")}
+                 placeholder="Money Button Label"></Input>
+                 </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Prompt for Amount</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.labelAmount} 
+                 onChange={this.handleChange("labelAmount")}
+                 placeholder="Amount Prompt"></Input>
+                 </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Prompt for Reference</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.labelReference} 
+                 onChange={this.handleChange("labelReference")}
+                 placeholder="Reference Prompt"></Input>
+                 </Col>
+              </Row>
 
-              </div>
-              </Col>
-            </Row>
+            </Form>
+            </Container>
           </TabPane>
 
           <TabPane tabId="buttondata">
-            <Row>
-              <Col sm="12">
-              <div className="form-group form-inline" style={{"float":"left"}}>
-              
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >website</label>
-                 <input type="text" className="form-control" value={this.state.website} onChange={this.handleChange("website")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >category</label>
-                 <input type="text" className="form-control" value={this.state.category} onChange={this.handleChange("category")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >description</label>
-                 <input type="text" className="form-control" value={this.state.description} onChange={this.handleChange("description")}></input>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >owner</label>
-                 <input type="text" className="form-control" value={this.state.owner} onChange={this.handleChange("owner")}></input>
-              </div>
+            <Container>
+            <Form className="form">
+              <Row>
+                <Col>
+                <Label>Website</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.website} 
+                 onChange={this.handleChange("website")}
+                 placeholder="Website"
+                 ></Input>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Category</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.category} 
+                 onChange={this.handleChange("category")}
+                 placeholder="Category"
+                 ></Input>
+                 </Col>
+              </Row>
+              <Row>
+              <Col>
+                <Label>Description</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.description} 
+                 onChange={this.handleChange("description")}
+                 placeholder="Description"
+                 ></Input>
+                 </Col>
+              </Row>
+              <Row>
+                <Col>
+                <Label>Owner</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.owner} 
+                 onChange={this.handleChange("owner")}
+                 placeholder="Owner"></Input>
+                 </Col>
+              </Row>
 
-              </div>
-              </Col>
-            </Row>
+            </Form>
+            </Container>
           </TabPane>
 
 
           <TabPane tabId="advanced">
+          <Container>
+            <Form className="form">
             <Row>
-              <Col sm="12">
-              <div className="form-group form-inline" style={{"float":"left"}}>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
+              <Col>
                 <label className="col-sm-4 col-form-label" ></label>
                 <Label check>
                   <Input type="checkbox" value={this.state.configTransactionAfterPayment} 
@@ -302,8 +300,10 @@ class App extends Component {
                   {' '}
                   Show Receipt
                 </Label>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
+              </Col>
+              </Row>
+              <Row>
+              <Col>
                 <label className="col-sm-4 col-form-label" ></label>
                 <Label check>
                   <Input type="checkbox" value={this.state.configSocialMediaAfterPayment} 
@@ -311,39 +311,45 @@ class App extends Component {
                   {' '}
                   Share on Social Media
                 </Label>
-              </div>
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >ButtonId</label>
-                 <input type="text" className="form-control" value={this.state.buttonId} onChange={this.handleChange("buttonId")}></input>
-              </div>
-              
-              <div className="col-md-12 form-group" style={{...this.styles}}>
-                <label className="col-sm-4 col-form-label" >ClientIdentifier</label>
-                 <input type="text" className="form-control" value={this.state.clientIdentifier} onChange={this.handleChange("clientIdentifier")}></input>
-              </div>
-              </div>
               </Col>
-            </Row>
+              </Row>
+              <Row>
+              <Col>
+                <Label>Button Id</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.buttonId} 
+                 onChange={this.handleChange("buttonId")}
+                 placeholder="Button Id"></Input>
+              </Col>
+              </Row>
+              
+              <Row>
+              <Col>
+                <Label>Client Identifier</Label>
+                </Col>
+                <Col>
+                 <Input type="text" value={this.state.clientIdentifier} 
+                 onChange={this.handleChange("clientIdentifier")}
+                 placeholder="Client Identifier"></Input>
+              </Col>
+              </Row>
+            </Form>
+            </Container>
           </TabPane>
         </TabContent>
 
               </CardBody>
             </Card>
-            <Card style={{"width":"50%"}}>
-                  <CardBody>
-                    <CardTitle>
-                      <CopyToClipboard text={code}
-                        onCopy={() => this.setState({copied: true})}>
-                        <button>Copy to clipboard</button>
-                      </CopyToClipboard>
-                      {this.state.copied ? <span style={{color: 'red'}}>{' '}Copied</span> : null}
-                    </CardTitle>
-                    <div>
-                      <textarea id="mb-code" rows="10" cols="80" value={code} readOnly={true}>
-                      </textarea>
-                    </div>
-                    </CardBody>
-            </Card>
+            <div>
+              <JsCopyClipboard 
+                      type={this.state.type}
+                      to={this.state.to}
+                      labelMoneyButton={this.state.labelMoneyButton}
+                      labelReference = {this.state.labelReference}
+                      labelAmount = {this.state.labelAmount}
+              />
+              </div>
            </div>
            </div>
            <Alert color="primary">

@@ -14,6 +14,7 @@ class MoneyButtonDonate extends React.Component {
     static defaultProps = {
         ...Component.defaultProps,
         currency: "USD",
+        to: "0",
         type: 'tip',
         labelMoneyButton: 'Slide to Donate',
         labelReference: 'Order Number',
@@ -58,10 +59,11 @@ class MoneyButtonDonate extends React.Component {
     }
 
     mbOnErrorCallback = (error) => {
-        //there is a bug in moneybutton
-        //api errors do not bubble up to ui
         this.setState({isAfterSwipeSuccess: false});
-        alert(JSON.stringify(error));
+        console.error(error);
+        alert(`An error occured in Money Button. 
+        Most likely there is a problem with they way you have set up your button. 
+        The error message is "${error}"`);
     }
 
     clickTransaction = () => {
@@ -85,7 +87,9 @@ class MoneyButtonDonate extends React.Component {
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
-        console.log(this.state.reference);
+        //to has to be assigned a value otherwise the button does not render.
+        //if user tries to swipe with to = 0 then they will get an error
+        let toAddress = this.props.to || "0";
         let amt = this.state.amount || this.props.defaultAmount || "0.01";
         let amtInput = this.state.amount || this.props.defaultAmount;
         let dsp = this.props.display;
@@ -155,7 +159,7 @@ class MoneyButtonDonate extends React.Component {
                 ) : null}
                 <div style={{float:"left"}}>
                     <MoneyButton
-                        to={this.props.to}
+                        to={toAddress}
                         clientIdentifier={this.props.clientIdentifier}
                         amount={amt}
                         currency={this.props.currency}
