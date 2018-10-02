@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import DonateToMe from './components/DonateToMe.jsx'
 import JsCopyClipboard from './components/JsCopyClipboard'
+import ShareButtonTwitter from './components/ShareButtonTwitter.jsx';
 import axios from 'axios'
 
 class App extends Component {
@@ -310,6 +311,7 @@ class App extends Component {
                   onChange={this.toggleShowSocialMedia}/>
                   {' '}
                   Share on Social Media
+                  <ShareButtonTwitter/>
                 </Label>
               </Col>
               </Row>

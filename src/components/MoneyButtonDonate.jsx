@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
 import { Button } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { TwitterShareButton } from 'react-twitter-embed';
+import ShareButtonTwitter from './ShareButtonTwitter.jsx';
 import Receipt from './Receipt.jsx'
 import ReactToPrint from "react-to-print";
 // import {
@@ -199,12 +199,7 @@ class MoneyButtonDonate extends React.Component {
                             </div>
                         ):null}
                         {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showSocialMedia) ? (
-                            <div style={{padding:"1px"}}>
-                            <TwitterShareButton
-                                url={'https://moneybutton.com'}
-                                options={{ text: '#moneybutton is awesome', size: 'large' }}
-                                />
-                             </div>
+                            <ShareButtonTwitter/>
                         ):null}
                         </div>
                 </div>
