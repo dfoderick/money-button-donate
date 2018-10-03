@@ -11,6 +11,9 @@ import DonateToMe from './components/DonateToMe.jsx'
 import JsCopyClipboard from './components/JsCopyClipboard'
 import Receipt from './components/Receipt.jsx';
 import ShareButtonTwitter from './components/ShareButtonTwitter.jsx';
+import PayWall from './components/PayWall.jsx'
+import Blur from 'react-css-blur'
+
 //import axios from 'axios'
 
 class App extends Component {
@@ -37,7 +40,8 @@ class App extends Component {
     website: '',
     category: '',
     description: '',
-    owner:''
+    owner:'',
+    paidForCode: false
     }
 
   componentDidMount() {
@@ -117,6 +121,11 @@ class App extends Component {
       });
     }
   }
+
+  whenPaid = (payment) => {
+    this.setState({paidForCode: true});
+  }
+
 
   render() {
 
@@ -347,6 +356,9 @@ class App extends Component {
               </CardBody>
             </Card>
             <div>
+              <PayWall onPayment={this.whenPaid}></PayWall>
+              <Blur radius={ !this.state.paidForCode ? '5px' : '0' } transition="400ms">
+              <fieldset disabled={!this.state.paidForCode}>
               <JsCopyClipboard 
                       type={this.state.type}
                       to={this.state.to}
@@ -354,6 +366,8 @@ class App extends Component {
                       labelReference = {this.state.labelReference}
                       labelAmount = {this.state.labelAmount}
               />
+              </fieldset>
+              </Blur>
               </div>
            </div>
            </div>

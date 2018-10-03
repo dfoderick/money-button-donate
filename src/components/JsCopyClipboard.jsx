@@ -85,7 +85,9 @@ class JsCopyClipboard extends React.Component {
                         {this.state.copied ? <span style={{color: 'red'}}>{' '}Copied. Paste the code into your site.</span> : null}
                     </CardTitle>
                     <div>
-                      <textarea id="mb-code" rows="10" cols="80" value={code} readOnly={true}>
+                      <textarea id="mb-code" rows="10" cols="80" value={code} 
+                      style={{"overflow":"hidden", "resize":"none"}}
+                      readOnly={true}>
                       </textarea>
                     </div>
                     </CardBody>
