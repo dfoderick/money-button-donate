@@ -11,7 +11,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-css-blur": "^1.1.1",
     "react-dom": "^16.5.2",
-    "react-scripts": "1.1.5",
+    "react-scripts": "2.0.3",
     "react-share": "^2.3.1",
     "react-twitter-embed": "^1.2.0",
     "reactstrap": "^6.4.0"
@@ -28,5 +28,11 @@
     "gh-pages": "^2.0.0",
     "react-social-icons": "^3.0.0",
     "react-to-print": "^2.0.0-alpha-3"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
