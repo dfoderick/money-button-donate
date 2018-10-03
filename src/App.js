@@ -9,13 +9,15 @@ import classnames from 'classnames';
 import MoneyButtonDonate from "./components/MoneyButtonDonate.jsx";
 import DonateToMe from './components/DonateToMe.jsx'
 import JsCopyClipboard from './components/JsCopyClipboard'
+import Receipt from './components/Receipt.jsx';
 import ShareButtonTwitter from './components/ShareButtonTwitter.jsx';
-import axios from 'axios'
+//import axios from 'axios'
 
 class App extends Component {
 
   state = {
     devMode: true,
+    debugTxid: "50eac9fafcbb060779f37bca4e54f5ff5e179656ba6bd2788530de7e89b62047",
     type: "buy",
     to:"",
     currency:"USD",
@@ -186,7 +188,7 @@ class App extends Component {
                     <FormText>User is required for Button to work!</FormText>
                     <Input type="text" placeholder="Send To User Number or address" valid={false}
                     required value={this.state.to} onChange={this.handleChange("to")}></Input>
-                    <FormFeedback invalid>
+                    <FormFeedback invalid="true">
                       A Money Button User Number is required! Otherwise the Try it Now buttons will not work!
                     </FormFeedback>
                   </FormGroup>
@@ -299,7 +301,8 @@ class App extends Component {
                   <Input type="checkbox" value={this.state.configTransactionAfterPayment} 
                   onChange={this.toggleShowTransaction}/>
                   {' '}
-                  Show Receipt
+                  Show Receipt after swipe
+                  <Receipt payment={{'txid': this.state.debugTxid}}/>
                 </Label>
               </Col>
               </Row>

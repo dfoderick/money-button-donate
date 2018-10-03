@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
 import MoneyButton from '@moneybutton/react-money-button'
-import { Button } from 'reactstrap';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ShareButtonTwitter from './ShareButtonTwitter.jsx';
 import Receipt from './Receipt.jsx'
-import ReactToPrint from "react-to-print";
 // import {
 //     TwitterShareButton, TwitterIcon
 //   } from 'react-share';
@@ -36,7 +33,6 @@ class MoneyButtonDonate extends React.Component {
         reference: "",
         isAfterSwipeSuccess: false,
         lastPayment:"",
-        openReceipt: false,
         txid:""
     };
 
@@ -65,25 +61,6 @@ class MoneyButtonDonate extends React.Component {
         Most likely there is a problem with they way you have set up your button. 
         The error message is "${error}"`);
     }
-
-    clickTransaction = () => {
-        let txid = "invalid";
-        if(this.state.lastPayment && this.state.lastPayment.hasOwnProperty('txid')) {
-            txid = this.state.lastPayment["txid"];
-        } else if (this.state.isDebug) {
-            txid = this.state.debugTxid;
-        }
-        this.setState({txid: txid});
-        this.setState({openReceipt: true});
-    }
-
-    showRawTransaction = () => {
-        window.open(`https://explorer.bitcoin.com/bch/tx/${this.state.txid}`, '_blank');
-    }
-
-    toggleReceipt = () => {
-        this.setState({openReceipt: !this.state.openReceipt});
-      }
 
     render() {
         //let amt = process.env.REACT_APP_DONATE_AMOUNT;
@@ -174,32 +151,14 @@ class MoneyButtonDonate extends React.Component {
                     />
                         <div style={{position:"relative", display:"inline-block", verticalAlign:"top", margin:"1px"}}>
                         {this.state.isDebug || this.state.openReceipt || (this.state.isAfterSwipeSuccess && this.props.showTransaction) ? (
-                            <div style={{padding:"1px"}}>
-                            <Button onClick={this.clickTransaction} style={{height:"30px", width:"75px", padding:"3px"}}
-                            >
-                                Receipt
-                            </Button>
-
-                            <Modal isOpen={this.state.openReceipt} toggle={this.toggleReceipt} size="lg">
-                            <ModalHeader toggle={this.toggleReceipt}>Transaction Receipt</ModalHeader>
-                            <ModalBody>
-                                <Receipt txid={this.state.txid} ref={el => (this.componentRef = el)}></Receipt>
-                            </ModalBody>
-                            <ModalFooter>
-                                <ReactToPrint
-                                trigger={() => <Button color="primary">Print</Button>}
-                                content={() => this.componentRef}
-                                />
-                                {' '}
-                                <Button color="secondary" onClick={this.showRawTransaction}>Transaction</Button>{' '}
-                                <Button color="secondary" onClick={this.toggleReceipt}>Close</Button>
-                            </ModalFooter>
-                            </Modal>
-
+                            <div>
+                                <Receipt payment={this.state.lastPayment}/>
                             </div>
                         ):null}
                         {this.state.isDebug || (this.state.isAfterSwipeSuccess && this.props.showSocialMedia) ? (
+                            <div>
                             <ShareButtonTwitter/>
+                            </div>
                         ):null}
                         </div>
                 </div>
