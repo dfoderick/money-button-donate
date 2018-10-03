@@ -1,7 +1,16 @@
 {
-  "main.css": "static/css/main.0743878e.css",
-  "main.css.map": "static/css/main.0743878e.css.map",
-  "main.js": "static/js/main.87924407.js",
-  "main.js.map": "static/js/main.87924407.js.map",
-  "static\\media\\logo.svg": "static/media/logo.afe56a1f.svg"
+  "main.css": "/money-button-donate/static/css/main.57791097.chunk.css",
+  "main.js": "/money-button-donate/static/js/main.a4d330eb.chunk.js",
+  "main.js.map": "/money-button-donate/static/js/main.a4d330eb.chunk.js.map",
+  "static/css/1.a0908d13.chunk.css": "/money-button-donate/static/css/1.a0908d13.chunk.css",
+  "static/js/1.f838b4be.chunk.js": "/money-button-donate/static/js/1.f838b4be.chunk.js",
+  "static/js/1.f838b4be.chunk.js.map": "/money-button-donate/static/js/1.f838b4be.chunk.js.map",
+  "runtime~main.js": "/money-button-donate/static/js/runtime~main.793d7cd6.js",
+  "runtime~main.js.map": "/money-button-donate/static/js/runtime~main.793d7cd6.js.map",
+  "static/css/1.a0908d13.chunk.css.map": "/money-button-donate/static/css/1.a0908d13.chunk.css.map",
+  "static/media/logo.svg": "/money-button-donate/static/media/logo.afe56a1f.svg",
+  "static/css/main.57791097.chunk.css.map": "/money-button-donate/static/css/main.57791097.chunk.css.map",
+  "index.html": "/money-button-donate/index.html",
+  "precache-manifest.122d0acc587a27559c520c09bfc7bcc9.js": "/money-button-donate/precache-manifest.122d0acc587a27559c520c09bfc7bcc9.js",
+  "service-worker.js": "/money-button-donate/service-worker.js"
 }
