@@ -1,7 +1,7 @@
 {
   "main.css": "/money-button-donate/static/css/main.57791097.chunk.css",
-  "main.js": "/money-button-donate/static/js/main.6fbea865.chunk.js",
-  "main.js.map": "/money-button-donate/static/js/main.6fbea865.chunk.js.map",
+  "main.js": "/money-button-donate/static/js/main.82fbbc4f.chunk.js",
+  "main.js.map": "/money-button-donate/static/js/main.82fbbc4f.chunk.js.map",
   "static/css/1.a0908d13.chunk.css": "/money-button-donate/static/css/1.a0908d13.chunk.css",
   "static/js/1.73ded367.chunk.js": "/money-button-donate/static/js/1.73ded367.chunk.js",
   "static/js/1.73ded367.chunk.js.map": "/money-button-donate/static/js/1.73ded367.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/media/logo.svg": "/money-button-donate/static/media/logo.afe56a1f.svg",
   "static/css/main.57791097.chunk.css.map": "/money-button-donate/static/css/main.57791097.chunk.css.map",
   "index.html": "/money-button-donate/index.html",
-  "precache-manifest.50426d4814aa2d23d6d7847ecadce308.js": "/money-button-donate/precache-manifest.50426d4814aa2d23d6d7847ecadce308.js",
+  "precache-manifest.70994aa614243eb70984ada49794e336.js": "/money-button-donate/precache-manifest.70994aa614243eb70984ada49794e336.js",
   "service-worker.js": "/money-button-donate/service-worker.js"
 }

@@ -8,15 +8,15 @@ self.__precacheManifest = [
     "url": "/money-button-donate/static/js/runtime~main.793d7cd6.js"
   },
   {
-    "revision": "6fbea8654a03e523e224",
-    "url": "/money-button-donate/static/js/main.6fbea865.chunk.js"
+    "revision": "82fbbc4f0606c6328ebd",
+    "url": "/money-button-donate/static/js/main.82fbbc4f.chunk.js"
   },
   {
     "revision": "73ded367d15268394b40",
     "url": "/money-button-donate/static/js/1.73ded367.chunk.js"
   },
   {
-    "revision": "6fbea8654a03e523e224",
+    "revision": "82fbbc4f0606c6328ebd",
     "url": "/money-button-donate/static/css/main.57791097.chunk.css"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/money-button-donate/static/css/1.a0908d13.chunk.css"
   },
   {
-    "revision": "9a25da3aabacfe114f60ed54d452fd1e",
+    "revision": "b0549aebc1f3bd40fdb70ea57513e6c0",
     "url": "/money-button-donate/index.html"
   }
 ];
